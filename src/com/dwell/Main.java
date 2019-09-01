@@ -13,7 +13,7 @@ public class Main {
         Point   pos     = MouseInfo.getPointerInfo().getLocation();
         boolean clicked = false;
         do {
-            TimeUnit.MILLISECONDS.sleep(200);
+            TimeUnit.MILLISECONDS.sleep(250);
             if (!MouseInfo.getPointerInfo().getLocation().equals(pos)) {
 //                System.out.println("0");
                 pos = MouseInfo.getPointerInfo().getLocation();
@@ -31,7 +31,7 @@ public class Main {
                 clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 clicker.delay(10);
                 clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-                clicker.delay(30);
+
                 pos = MouseInfo.getPointerInfo().getLocation();
                 clicked = true;
 //                System.out.println("2");
