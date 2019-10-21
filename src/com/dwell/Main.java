@@ -13,7 +13,12 @@ public class Main {
         Point   pos     = MouseInfo.getPointerInfo().getLocation();
         boolean clicked = false;
         do {
-            TimeUnit.MILLISECONDS.sleep(250);
+            TimeUnit.MILLISECONDS.sleep(200);
+            if (MouseInfo.getPointerInfo().getLocation() == null) {
+                clicked = false;
+                System.out.println("NPE (1)");
+                continue;
+            }
             if (!MouseInfo.getPointerInfo().getLocation().equals(pos)) {
 //                System.out.println("0");
                 pos = MouseInfo.getPointerInfo().getLocation();
