@@ -10,10 +10,14 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        Point   pos     = MouseInfo.getPointerInfo().getLocation();
-        boolean clicked = false;
+        Point     pos          = MouseInfo.getPointerInfo().getLocation();
+        boolean   clicked      = false;
+        final int TIMEOUT      = 175;
+        final int SCROLL_EDGE1 = 1425;
+        final int SCROLL_EDGE2 = 1325;
+
         do {
-            TimeUnit.MILLISECONDS.sleep(200);
+            TimeUnit.MILLISECONDS.sleep(TIMEOUT);
             if (MouseInfo.getPointerInfo().getLocation() == null) {
                 clicked = false;
                 System.out.println("NPE (1)");
@@ -34,6 +38,13 @@ public class Main {
             try {
                 Robot clicker = new Robot();
                 clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                pos = MouseInfo.getPointerInfo().getLocation();
+                if (pos.x >= SCROLL_EDGE1) {
+                    while (pos.x >= SCROLL_EDGE2) {
+                        TimeUnit.MILLISECONDS.sleep(10);
+                        pos = MouseInfo.getPointerInfo().getLocation();
+                    }
+                }
                 clicker.delay(10);
                 clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 
