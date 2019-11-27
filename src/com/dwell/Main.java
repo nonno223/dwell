@@ -40,7 +40,7 @@ public class Main {
                 Robot clicker = new Robot();
 
                 while (pos.x <= SCROLL_EDGE1) {
-                    int delay = pos.y <= 25 || pos.y >= 875 ? 5 : 25;
+                    int delay = pos.y <= 25 || pos.y >= 875 ? 5 : 50;
                     scroll(10, clicker, pos.y >= HALF, delay);
                     TimeUnit.MILLISECONDS.sleep(1);
                     pos = MouseInfo.getPointerInfo().getLocation();
