@@ -13,8 +13,9 @@ public class Main {
         Point     pos          = MouseInfo.getPointerInfo().getLocation();
         boolean   clicked      = false;
         final int TIMEOUT      = 175;
-        final int SCROLL_EDGE1 = 1425;
-        final int SCROLL_EDGE2 = 1325;
+        final int SCROLL_EDGE1 = 1;
+        final int SCROLL_EDGE2 = 10;
+        final int HALF         = 450;
 
         do {
             TimeUnit.MILLISECONDS.sleep(TIMEOUT);
@@ -37,23 +38,35 @@ public class Main {
 
             try {
                 Robot clicker = new Robot();
-                clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                pos = MouseInfo.getPointerInfo().getLocation();
-                if (pos.x >= SCROLL_EDGE1) {
-                    while (pos.x >= SCROLL_EDGE2) {
-                        TimeUnit.MILLISECONDS.sleep(10);
-                        pos = MouseInfo.getPointerInfo().getLocation();
-                    }
-                }
-                clicker.delay(10);
-                clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 
+                while (pos.x <= SCROLL_EDGE1) {
+                    int delay = pos.y <= 25 || pos.y >= 875 ? 5 : 25;
+                    scroll(10, clicker, pos.y >= HALF, delay);
+                    TimeUnit.MILLISECONDS.sleep(1);
+                    pos = MouseInfo.getPointerInfo().getLocation();
+                    //        System.out.println(pos);
+                }
+                if (pos.x > SCROLL_EDGE2) {
+                    clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                    clicker.delay(10);
+                    clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                    clicked = true;
+                }
                 pos = MouseInfo.getPointerInfo().getLocation();
-                clicked = true;
 //                System.out.println("2");
             } catch (AWTException e) {
                 e.printStackTrace();
             }
         } while (true);
+    }
+
+    private static void scroll(int steps, Robot r, boolean up, int delay) {
+        for (int i = 0; i < steps; i++) {
+            r.mouseWheel(up ? -1 : 1);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 }
