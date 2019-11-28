@@ -13,7 +13,8 @@ public class Main {
         Point     pos          = MouseInfo.getPointerInfo().getLocation();
         boolean   clicked      = false;
         final int TIMEOUT      = 175;
-        final int SCROLL_EDGE1 = 5;
+        final int SCROLL_EDGE1 = 1;
+        final int SCROLL_EDGE2 = 25;
         final int HALF         = 450;
 
         do {
@@ -39,19 +40,18 @@ public class Main {
                 Robot clicker = new Robot();
 
                 while (pos.x <= SCROLL_EDGE1) {
-                    int delay = pos.y <= 25 || pos.y >= 875 ? 5 : 50;
-                    scroll(10, clicker, pos.y >= HALF, delay);
+                    scroll(10, clicker, pos.y >= HALF, 50);
                     TimeUnit.MILLISECONDS.sleep(1);
                     pos = MouseInfo.getPointerInfo().getLocation();
                     //        System.out.println(pos);
                 }
-//                if (pos.x > SCROLL_EDGE2) {
-//                    clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-//                    clicker.delay(10);
-//                    clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-//                    clicked = true;
-//                }
-//                pos = MouseInfo.getPointerInfo().getLocation();
+                if (pos.x > SCROLL_EDGE2) {
+                    clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                    clicker.delay(10);
+                    clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                    clicked = true;
+                }
+                pos = MouseInfo.getPointerInfo().getLocation();
 //                System.out.println("2");
             } catch (AWTException e) {
                 e.printStackTrace();
