@@ -13,8 +13,7 @@ public class Main {
         Point     pos          = MouseInfo.getPointerInfo().getLocation();
         boolean   clicked      = false;
         final int TIMEOUT      = 175;
-        final int SCROLL_EDGE1 = 1;
-        final int SCROLL_EDGE2 = 10;
+        final int SCROLL_EDGE1 = 5;
         final int HALF         = 450;
 
         do {
@@ -46,13 +45,13 @@ public class Main {
                     pos = MouseInfo.getPointerInfo().getLocation();
                     //        System.out.println(pos);
                 }
-                if (pos.x > SCROLL_EDGE2) {
-                    clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                    clicker.delay(10);
-                    clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-                    clicked = true;
-                }
-                pos = MouseInfo.getPointerInfo().getLocation();
+//                if (pos.x > SCROLL_EDGE2) {
+//                    clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+//                    clicker.delay(10);
+//                    clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+//                    clicked = true;
+//                }
+//                pos = MouseInfo.getPointerInfo().getLocation();
 //                System.out.println("2");
             } catch (AWTException e) {
                 e.printStackTrace();
