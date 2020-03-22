@@ -1,9 +1,6 @@
 package com.dwell;
 
-import java.awt.AWTException;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Robot;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.util.concurrent.TimeUnit;
 
@@ -11,27 +8,31 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         Point     pos          = MouseInfo.getPointerInfo().getLocation();
+        Point     location     = MouseInfo.getPointerInfo().getLocation();
         boolean   clicked      = false;
-        final int TIMEOUT      = 200;
-        final int SCROLL_EDGE1 = 1;
-        final int SCROLL_EDGE2 = 25;
-        final int HALF         = 450;
+        boolean   middleScroll = false;
+        final int TIMEOUT      = 330;
+        final int JITTER       = 1;
+        final int RIGHT_EDGE   = 1410;
 
         do {
             TimeUnit.MILLISECONDS.sleep(TIMEOUT);
             if (MouseInfo.getPointerInfo().getLocation() == null) {
                 clicked = false;
-                System.out.println("NPE (1)");
                 continue;
             }
-            if (!MouseInfo.getPointerInfo().getLocation().equals(pos)) {
-//                System.out.println("0");
+
+            location = MouseInfo.getPointerInfo().getLocation();
+            if (Math.abs(location.getX() - pos.getX()) > JITTER
+                || Math.abs(location.getY() - pos.getY()) > JITTER) {
                 pos = MouseInfo.getPointerInfo().getLocation();
                 clicked = false;
                 continue;
             }
-            if (MouseInfo.getPointerInfo().getLocation().equals(pos) && clicked) {
-//                System.out.println("1");
+
+            location = MouseInfo.getPointerInfo().getLocation();
+            if ((Math.abs(location.getX() - pos.getX()) <= JITTER
+                 && Math.abs(location.getY() - pos.getY()) <= JITTER) && clicked) {
                 pos = MouseInfo.getPointerInfo().getLocation();
                 continue;
             }
@@ -39,25 +40,26 @@ public class Main {
             try {
                 Robot clicker = new Robot();
 
+                location = MouseInfo.getPointerInfo().getLocation();
+                if (location.getX() >= RIGHT_EDGE) {
+                    clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
+                    clicker.delay(10);
+                    clicker.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
+                    middleScroll = !middleScroll;
+                    TimeUnit.MILLISECONDS.sleep(TIMEOUT);
+                    continue;
+                } else if (middleScroll) {
+                    continue;
+                }
+
                 clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 clicker.delay(10);
                 clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 clicked = true;
                 pos = MouseInfo.getPointerInfo().getLocation();
-//                System.out.println("2");
             } catch (AWTException e) {
                 e.printStackTrace();
             }
         } while (true);
-    }
-
-    private static void scroll(int steps, Robot r, boolean up, int delay) {
-        for (int i = 0; i < steps; i++) {
-            r.mouseWheel(up ? -1 : 1);
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-            }
-        }
     }
 }
