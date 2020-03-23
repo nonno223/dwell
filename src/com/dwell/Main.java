@@ -11,7 +11,7 @@ public class Main {
         Point     location     = MouseInfo.getPointerInfo().getLocation();
         boolean   clicked      = false;
         boolean   middleScroll = false;
-        final int TIMEOUT      = 330;
+        final int TIMEOUT      = 300;
         final int JITTER       = 1;
         final int RIGHT_EDGE   = 1410;
 
