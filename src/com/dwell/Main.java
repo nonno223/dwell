@@ -13,7 +13,7 @@ public class Main {
         boolean   clicked        = false;
         final int TIMEOUT        = 300;
         final int SCROLL_JITTER  = 2;
-        final int TIMEOUT_SCROLL = 5000;
+        final int TIMEOUT_SCROLL = 10000;
         final int JITTER         = 1;
 
         do {
