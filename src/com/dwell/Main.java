@@ -7,15 +7,16 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        Point     pos            = MouseInfo.getPointerInfo().getLocation();
-        Point     location       = MouseInfo.getPointerInfo().getLocation();
-        Point     prevLocation   = MouseInfo.getPointerInfo().getLocation();
-        boolean   clicked        = false;
-        final int TIMEOUT        = 300;
-        final int DOWN_SCROLL    = 50;
-        final int SCROLL_JITTER  = 10;
-        final int TIMEOUT_SCROLL = 5000;
-        final int JITTER         = 1;
+        Point     pos             = MouseInfo.getPointerInfo().getLocation();
+        Point     location        = MouseInfo.getPointerInfo().getLocation();
+        Point     prevLocation    = MouseInfo.getPointerInfo().getLocation();
+        boolean   clicked         = false;
+        final int TIMEOUT         = 300;
+        final int DOWN_SCROLL_MIN = 50;
+        final int DOWN_SCROLL_MAX = 500;
+        final int SCROLL_JITTER   = 5;
+        final int TIMEOUT_SCROLL  = 5000;
+        final int JITTER          = 1;
 
         do {
             TimeUnit.MILLISECONDS.sleep(TIMEOUT);
@@ -42,16 +43,17 @@ public class Main {
             try {
                 Robot clicker = new Robot();
 
-                System.out.println(prevLocation);
-                System.out.println(location);
+                System.out.println(prevLocation + " -- " + location);
                 location = MouseInfo.getPointerInfo().getLocation();
-                if (Math.abs(location.getY() - prevLocation.getY()) <= DOWN_SCROLL
+                if (Math.abs(location.getY() - prevLocation.getY()) >= DOWN_SCROLL_MIN
+                    && Math.abs(location.getY() - prevLocation.getY()) <= DOWN_SCROLL_MAX
                     && Math.abs(location.getX() - prevLocation.getX()) <= SCROLL_JITTER) {
                     clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
                     clicker.delay(10);
                     clicker.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
                     TimeUnit.MILLISECONDS.sleep(TIMEOUT_SCROLL);
-                    prevLocation = location;
+                    clicked = true;
+                    prevLocation = MouseInfo.getPointerInfo().getLocation();
                     continue;
                 }
 
@@ -60,7 +62,7 @@ public class Main {
                 clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 clicked = true;
                 pos = MouseInfo.getPointerInfo().getLocation();
-                prevLocation = location;
+                prevLocation = MouseInfo.getPointerInfo().getLocation();
             } catch (AWTException e) {
                 e.printStackTrace();
             }
