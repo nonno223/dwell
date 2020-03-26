@@ -43,7 +43,7 @@ public class Main {
             try {
                 Robot clicker = new Robot();
 
-                System.out.println(prevLocation + " -- " + location);
+       //         System.out.println(prevLocation + " -- " + location);
                 location = MouseInfo.getPointerInfo().getLocation();
                 if (Math.abs(location.getY() - prevLocation.getY()) >= DOWN_SCROLL_MIN
                     && Math.abs(location.getY() - prevLocation.getY()) <= DOWN_SCROLL_MAX
