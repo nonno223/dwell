@@ -9,11 +9,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Point     pos            = MouseInfo.getPointerInfo().getLocation();
         Point     location       = MouseInfo.getPointerInfo().getLocation();
-        Point     prevLocation   = MouseInfo.getPointerInfo().getLocation();
         boolean   clicked        = false;
         final int TIMEOUT        = 300;
-        final int SCROLL_JITTER  = 2;
-        final int TIMEOUT_SCROLL = 10000;
         final int JITTER         = 1;
 
         do {
@@ -41,23 +38,11 @@ public class Main {
             try {
                 Robot clicker = new Robot();
 
-       //         System.out.println(prevLocation + " -- " + location);
-                location = MouseInfo.getPointerInfo().getLocation();
-                if (Math.abs(location.getX() - prevLocation.getX()) <= SCROLL_JITTER) {
-                    clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
-                    clicker.delay(10);
-                    clicker.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
-                    TimeUnit.MILLISECONDS.sleep(TIMEOUT_SCROLL);
-                    clicked = true;
-                    continue;
-                }
-
                 clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 clicker.delay(10);
                 clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 clicked = true;
                 pos = MouseInfo.getPointerInfo().getLocation();
-                prevLocation = MouseInfo.getPointerInfo().getLocation();
             } catch (AWTException e) {
                 e.printStackTrace();
             }
