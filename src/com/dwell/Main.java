@@ -20,10 +20,10 @@ public class Main {
         do {
             final Robot clicker = new Robot();
             location = MouseInfo.getPointerInfo().getLocation();
-            if (scroll && location.getX() >= SCROLL_EDGE) {
+            if (scroll && (location.getX() >= SCROLL_EDGE || location.getX() <= 0)) {
                 scroll = false;
                 TimeUnit.MILLISECONDS.sleep(100);
-            } else if (location.getX() >= SCROLL_EDGE) {
+            } else if (location.getX() >= SCROLL_EDGE || location.getX() <= 0) {
                 TimeUnit.MILLISECONDS.sleep(TIMEOUT_BIG);
                 clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
                 clicker.delay(10);
