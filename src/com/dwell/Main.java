@@ -22,7 +22,7 @@ public class Main {
             location = MouseInfo.getPointerInfo().getLocation();
             if (scroll && location.getX() >= SCROLL_EDGE) {
                 scroll = false;
-                TimeUnit.MILLISECONDS.sleep(TIMEOUT);
+                TimeUnit.MILLISECONDS.sleep(100);
             } else if (location.getX() >= SCROLL_EDGE) {
                 TimeUnit.MILLISECONDS.sleep(TIMEOUT_BIG);
                 clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
@@ -30,7 +30,7 @@ public class Main {
                 clicker.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
                 scroll = true;
             } else if (scroll) {
-                TimeUnit.MILLISECONDS.sleep(TIMEOUT);
+                TimeUnit.MILLISECONDS.sleep(100);
                 continue;
             }
 
