@@ -12,7 +12,6 @@ public class Main {
         boolean   clicked       = false;
         boolean   scroll        = false;
         final int TIMEOUT       = 200;
-        final int TIMEOUT_SMALL = 100;
         final int TIMEOUT_BIG   = 400;
         final int SCROLL_EDGE   = 1439;
         final int JITTER        = 1;
@@ -23,7 +22,7 @@ public class Main {
             location = MouseInfo.getPointerInfo().getLocation();
             if (scroll && location.getX() >= SCROLL_EDGE) {
                 scroll = false;
-                TimeUnit.MILLISECONDS.sleep(TIMEOUT_SMALL);
+                TimeUnit.MILLISECONDS.sleep(TIMEOUT);
             } else if (location.getX() >= SCROLL_EDGE) {
                 TimeUnit.MILLISECONDS.sleep(TIMEOUT_BIG);
                 clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
@@ -31,7 +30,7 @@ public class Main {
                 clicker.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
                 scroll = true;
             } else if (scroll) {
-                TimeUnit.MILLISECONDS.sleep(TIMEOUT_SMALL);
+                TimeUnit.MILLISECONDS.sleep(TIMEOUT);
                 continue;
             }
 
