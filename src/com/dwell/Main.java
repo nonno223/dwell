@@ -7,34 +7,15 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException, AWTException {
-        Point     pos           = MouseInfo.getPointerInfo().getLocation();
-        Point     location      = MouseInfo.getPointerInfo().getLocation();
-        boolean   clicked       = false;
-        boolean   scroll        = false;
-        final int TIMEOUT       = 200;
-        final int TIMEOUT_BIG   = 400;
-        final int SCROLL_EDGE   = 1439;
-        final int JITTER        = 1;
+        Point     pos         = MouseInfo.getPointerInfo().getLocation();
+        Point     location    = MouseInfo.getPointerInfo().getLocation();
+        boolean   clicked     = false;
+        final int TIMEOUT     = 200;
+        final int SCROLL_EDGE = 1430;
+        final int JITTER      = 1;
 
 
         do {
-            final Robot clicker = new Robot();
-            location = MouseInfo.getPointerInfo().getLocation();
-            if (scroll && (location.getX() >= SCROLL_EDGE || location.getX() <= 0)) {
-                scroll = false;
-                TimeUnit.MILLISECONDS.sleep(100);
-            } else if (location.getX() >= SCROLL_EDGE || location.getX() <= 0) {
-                TimeUnit.MILLISECONDS.sleep(TIMEOUT_BIG);
-                clicker.mousePress(InputEvent.BUTTON2_DOWN_MASK);
-                clicker.delay(10);
-                clicker.mouseRelease(InputEvent.BUTTON2_DOWN_MASK);
-                scroll = true;
-            } else if (scroll) {
-                TimeUnit.MILLISECONDS.sleep(100);
-                continue;
-            }
-
-
             TimeUnit.MILLISECONDS.sleep(TIMEOUT);
             if (MouseInfo.getPointerInfo().getLocation() == null) {
                 clicked = false;
@@ -55,12 +36,14 @@ public class Main {
                 pos = MouseInfo.getPointerInfo().getLocation();
                 continue;
             }
-
+            final Robot clicker = new Robot();
             clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-            clicker.delay(10);
-            clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-            clicked = true;
             pos = MouseInfo.getPointerInfo().getLocation();
+            if (pos.getX() < SCROLL_EDGE) {
+                clicker.delay(10);
+                clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            }
+            clicked = true;
 
         } while (true);
     }
