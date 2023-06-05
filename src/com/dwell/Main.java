@@ -5,19 +5,17 @@ import java.awt.event.InputEvent;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
+    private static       boolean clicked          = false;
+    private static final int     TIMEOUT          = 150;
+    private static final int     JITTER           = 1;
 
     public static void main(String[] args) throws InterruptedException, AWTException {
-        Point     pos         = MouseInfo.getPointerInfo().getLocation();
-        Point     location    = MouseInfo.getPointerInfo().getLocation();
-        boolean   clicked     = false;
-        final int TIMEOUT     = 200;
-        final int SCROLL_EDGE = 1430;
-        final int JITTER      = 1;
-
+        Point pos      = MouseInfo.getPointerInfo().getLocation();
+        Point location = MouseInfo.getPointerInfo().getLocation();
 
         do {
             TimeUnit.MILLISECONDS.sleep(TIMEOUT);
-            if (MouseInfo.getPointerInfo().getLocation() == null) {
+            if (MouseInfo.getPointerInfo() == null || MouseInfo.getPointerInfo().getLocation() == null) {
                 clicked = false;
                 continue;
             }
@@ -36,13 +34,12 @@ public class Main {
                 pos = MouseInfo.getPointerInfo().getLocation();
                 continue;
             }
+
+            TimeUnit.MILLISECONDS.sleep(10);
             final Robot clicker = new Robot();
             clicker.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-            pos = MouseInfo.getPointerInfo().getLocation();
-            if (pos.getX() < SCROLL_EDGE) {
-                clicker.delay(10);
-                clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-            }
+            clicker.delay(10);
+            clicker.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
             clicked = true;
 
         } while (true);
